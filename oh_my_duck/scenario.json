@@ -1,0 +1,26 @@
+[
+  {
+    "node_id": "start",
+    "header_message": "Утка-маляр 🦆 решила выпить зайти в бар. Взять ей зонтик? ☂️",
+    "transitions": [
+      {
+        "message": "Взять!",
+        "target_node_id": "with_umbrella"
+      },
+      {
+        "message": "Утки воды не боятся.",
+        "target_node_id": "without_umbrella"
+      }
+    ]
+  },
+  {
+    "node_id": "with_umbrella",
+    "header_message": "",
+    "transitions": []
+  },
+  {
+    "node_id": "without_umbrella",
+    "header_message": "",
+    "transitions": []
+  }
+]
