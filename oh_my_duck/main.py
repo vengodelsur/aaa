@@ -46,8 +46,7 @@ class DialogGraph:
             graph.nodes_dictionary[node_info["node_id"]] = node
         # read transitions
         for node_info in json_dialog_info:
-            # TODO: node getting
-            node = graph.nodes_dictionary[node_info["node_id"]]
+            node = graph.get_node(node_info["node_id"])
             for transition in node_info["transitions"]:
                 node.add_transition(transition["message"], transition["target_node_id"])
         return graph
@@ -77,13 +76,9 @@ class DialogManager:
         print("GAME OVER")
 
 
-# TODO: read user input
-
-
 if __name__ == '__main__':
     graph = DialogGraph.from_json('scenario.json')
-    # TODO: may be switch to storing transitions in graph in terms of ids?
-    # TODO: get rig of the dictionary?
+    # TODO: get rid of the dictionary?
     # print([(node_id, node.transition_nodes) for node_id, node in graph.nodes_dictionary.items()])
     manager = DialogManager(graph)
     manager.run()
