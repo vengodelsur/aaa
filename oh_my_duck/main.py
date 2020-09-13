@@ -73,12 +73,13 @@ class DialogManager:
     def run(self):
         while self.graph.get_node(self.current_node_id):
             self.read_user_input()
+        current_node = self.graph.get_node(self.current_node_id)
+        print(current_node.header_message)
         print("GAME OVER")
 
 
 if __name__ == '__main__':
     graph = DialogGraph.from_json('scenario.json')
-    # TODO: get rid of the dictionary?
     # print([(node_id, node.transition_nodes) for node_id, node in graph.nodes_dictionary.items()])
     manager = DialogManager(graph)
     manager.run()

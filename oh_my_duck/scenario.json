@@ -15,12 +15,31 @@
   },
   {
     "node_id": "with_umbrella",
-    "header_message": "",
-    "transitions": []
+    "header_message": "Уточка вышла на улицу и увидела, что погода премерзкая.",
+    "transitions": [
+      {
+        "message": "Тем более надо пойти выпить!",
+        "target_node_id": "in_the_bar"
+      },
+      {
+        "message": "И зашла обратно домой смотреть \"Поющих под дождём\". Тоже лучше что-нибудь хорошее посмотрите, а не гитхабы всякие.",
+        "target_node_id": "sweet_home"
+      }
+    ]
   },
   {
     "node_id": "without_umbrella",
-    "header_message": "",
+    "header_message": "Ну и правильно. Когда вы в последний раз утку с зонтиком видели?",
+    "transitions": []
+  },
+  {
+    "node_id": "in_the_bar",
+    "header_message": "Буль-буль",
+    "transitions": []
+  },
+  {
+    "node_id": "sweet_home",
+    "header_message": "Утя в домике",
     "transitions": []
   }
 ]
