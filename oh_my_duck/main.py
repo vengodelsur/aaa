@@ -59,8 +59,6 @@ class DialogGraph:
         pass
 
 
-
-
 class DialogManager:
     def __init__(self, graph: DialogGraph):
         self.graph = graph
