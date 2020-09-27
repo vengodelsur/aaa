@@ -10,7 +10,6 @@ def print_departments(csv_reader: csv.DictReader):
     """
     departments = set()
     for row in csv_reader:
-        # KeyError
         departments.add(row['Отдел'])
     print('Список отделов:')
     for department in departments:
@@ -44,9 +43,12 @@ def create_summary_report(csv_reader: csv.DictReader) -> Dict[str, Dict[str, int
         current_department_stats['staff_number'] += 1
     for department in departments_stats:
         current_department_stats = departments_stats[department]
-        current_department_stats['mean_salary'] = current_department_stats['salary_sum'] / \
-                                                  current_department_stats[
-                                                      'staff_number']  # zero division
+        try:
+            current_department_stats['mean_salary'] = current_department_stats['salary_sum'] / \
+                                                      current_department_stats['staff_number']
+        except ZeroDivisionError:
+            current_department_stats['mean_salary'] = 0
+            print(f'Для отдела {department_name} некорректно посчитано число сотрудников (0)')
     return departments_stats
 
 
@@ -97,7 +99,8 @@ def choose_option(options_number: int) -> int:
             if option in range(options_number):
                 return option
         except ValueError:
-            print(f'Incorrect input, try again. Choose number from 0 to {options_number - 1}')
+            pass
+        print(f'Incorrect input, try again. Choose number from 0 to {options_number - 1}')
 
 
 def main():
@@ -113,15 +116,13 @@ def main():
 
     options_descriptions = (
         'Показать список отделов', 'Показать сводный отчет', 'Сохранить сводный отчет')
-    print("Выберите:\n" + "\n".join(
-        f"{i}) {description}" for i, description in enumerate(options_descriptions)))
+    print('Выберите:\n' + '\n'.join(
+        f'{i}) {description}' for i, description in enumerate(options_descriptions)))
     options_number = len(options_descriptions)
     option = choose_option(options_number)
 
     with open(input_filename) as f:
         info = csv.DictReader(f, delimiter=delimiter)
-
-        # TODO: errors for no file and incorrect csv
         if option == 0:
             print_departments(info)
         elif option == 1:
@@ -131,7 +132,7 @@ def main():
             report = create_summary_report(info)
             print_summary_report(report, output_filename)
         else:
-            pass
+            print('Incorrect option {option}')
 
 
 if __name__ == '__main__':
