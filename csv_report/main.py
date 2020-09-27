@@ -18,8 +18,8 @@ def print_departments(csv_reader: csv.DictReader):
 
 def create_summary_report(csv_reader: csv.DictReader) -> Dict[str, Dict[str, int]]:
     """
-    Создаёт отчёт о минимальной, максимальной, средней зарплате по отделам :param csv_reader:
-    объект для чтени информации об отделах из csv
+    Создаёт отчёт о сленности и минимальной, максимальной, средней зарплате по отделам
+    :param csv_reader: объект для чтения информации об отделах из csv
     :return: словарь со сводной информацией о зарплате по отделам, например:
         {'Продажи': {'department_name': 'Продажи', 'min_salary': 100500, 'max_salary': 100500,
                      'mean_salary': 100500.0,'staff_number': 1, 'salary_sum': 100500}}
@@ -56,12 +56,12 @@ def print_summary_report(report: Dict[str, Dict[str, int]], output_filename: Opt
     """
     Выводит/сохраняет отчёт о минимальной, максимальной, средней зарплате по отделам
     :param report: словарь с информацией по отделам, например:
-        {'Продажи': {'department_name': 'Продажи', 'min_salary': 100500, 'max_salary': 100500,
-                     'mean_salary': 100500.0}}
+        {'Продажи': {'department_name': 'Продажи', 'staff_number': 1, 'min_salary': 100500,
+                     'max_salary': 100500, 'mean_salary': 100500.0}}
     :param output_filename: имя файла для вывода отчета (если None, используется стандартный вывод)
     :return:
     """
-    keys = ('department_name', 'min_salary', 'max_salary', 'mean_salary')
+    keys = ('department_name', 'staff_number', 'min_salary', 'max_salary', 'mean_salary')
     if output_filename is None:
         report_to_csv(report, keys, sys.stdout)
         return
@@ -106,9 +106,11 @@ def choose_option(options_number: int) -> int:
 def main():
     """
     По выбору пользователя выводит информацию из v отчёта о сотрудниках компании:
-    выводит список отделов
-    выводит сводный отчёт (минимальная, максимальная, средняя зарплата по отделам)
-    сохраняет сводный отчёт в файл (минимальная, максимальная, средняя зарплата по отделам)
+        - выводит список  отделов
+        - выводит сводный отчёт (численность и минимальная, максимальная, средняя зарплата по
+          отделам)
+        - сохраняет сводный отчёт в файл (численность и минимальная, максимальная,
+          средняя зарплата по отделам)
     """
     input_filename = 'funcs_homework_employees_sample.csv'
     output_filename = 'report.csv'
