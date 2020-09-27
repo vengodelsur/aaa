@@ -1,5 +1,6 @@
 import csv
-from typing import Dict, Optional
+import sys
+from typing import Dict, Optional, TextIO, Tuple
 
 
 def print_departments(csv_reader):
@@ -18,8 +19,8 @@ def create_summary_report(csv_reader: csv.DictReader) -> Dict[str, Dict[str, int
         department_name = row['Отдел']
         salary = int(row['Оклад'])
         departments_stats.setdefault(department_name,
-                                     {'min_salary': None, 'max_salary': None, 'staff_number': 0,
-                                      'salary_sum': 0})
+                                     {'department_name': department_name, 'min_salary': None,
+                                      'max_salary': None, 'staff_number': 0, 'salary_sum': 0})
         current_department_stats = departments_stats[department_name]
         if current_department_stats['max_salary'] is None or salary > current_department_stats[
             'max_salary']:
@@ -39,7 +40,20 @@ def create_summary_report(csv_reader: csv.DictReader) -> Dict[str, Dict[str, int
 
 def print_summary_report(report: Dict[str, Dict[str, int]], output_filename: Optional[str] = None):
     print(report)
-    pass
+    keys = ('department_name', 'min_salary', 'max_salary', 'mean_salary')
+    if output_filename is None:
+        report_to_csv(report, keys, sys.stdout)
+        return
+    with open(output_filename, 'w') as f:
+        report_to_csv(report, keys, f)
+
+
+def report_to_csv(report: Dict[str, Dict[str, int]], keys: Tuple[str, ...], f: TextIO,
+                  delimiter: Optional[str] = '\t'):
+    dict_writer = csv.DictWriter(f, keys, delimiter=delimiter)
+    dict_writer.writeheader()
+    for department_stats in report.values():
+        dict_writer.writerow({key: department_stats[key] for key in keys})
 
 
 def choose_option(options_number: int) -> int:
