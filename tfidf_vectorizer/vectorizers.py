@@ -70,15 +70,30 @@ class CountVectorizer:
 class TfidfTransformer:
     @staticmethod
     def tf_transform(count_matrix: List[List[int]]) -> List[List[float]]:
+        """
+        Выдаёт матрицу term frequency по матрице для количества вхождений
+        :param count_matrix: матрица для количества вхождений
+        :return: матрица term frequency
+        """
         return [TfidfTransformer._tf_transform_row(row) for row in count_matrix]
 
     @staticmethod
     def _tf_transform_row(row: List[int]) -> List[float]:
+        """
+        Выдаёт вектор term frequency по вектору для количества вхождений
+        :param row: вектор для количества вхождений
+        :return: вектор term frequency
+        """
         count_sum = sum(row)
         return [count / count_sum for count in row]
 
     @staticmethod
     def idf_transform(count_matrix: List[List[int]]) -> List[float]:
+        """
+        Выдаёт вектор inverse document frequency по матрице для количества вхождений
+        :param count_matrix: матрица для количества вхождений
+        :return: вектор inverse document frequency
+        """
         num_documents = len(count_matrix)
         document_counts = [0 for _ in range(len(count_matrix[0]))]
         for row in count_matrix:
@@ -93,6 +108,11 @@ class TfidfTransformer:
 
     @staticmethod
     def fit_transform(count_matrix: List[List[int]]) -> List[List[float]]:
+        """
+        Выдаёт матрицу TF-IDF признаков по матрице для количества вхождений
+        :param count_matrix: матрица TF-IDF признаков
+        :return: матрица для количества вхождений
+        """
         tf_matrix = TfidfTransformer.tf_transform(count_matrix)
         idf_vector = TfidfTransformer.idf_transform(count_matrix)
         tfidf_matrix = [
@@ -102,6 +122,9 @@ class TfidfTransformer:
 
     @staticmethod
     def _multiply_by_elements(left: List[float], right: List[float]) -> List[float]:
+        """
+        Поэлементно перемножает два вектора
+        """
         return [left_item * right_item for left_item, right_item in zip(left, right)]
 
 
@@ -111,5 +134,10 @@ class TfidfVectorizer(CountVectorizer):
         self._tfidf_transformer = TfidfTransformer()
 
     def fit_transform(self, corpus: List[str]) -> List[List[float]]:
+        """
+        Выдаёт матрицу TF-IDF признаков по корпусу
+        :param corpus: корпус (набор текстов)
+        :return: матрица TF-IDF признаков
+        """
         count_matrix = super().fit_transform(corpus)
         return self._tfidf_transformer.fit_transform(count_matrix)
