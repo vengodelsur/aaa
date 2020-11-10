@@ -67,35 +67,37 @@ class CountVectorizer:
         return self._feature_names
 
 
-def tf_transform(count_matrix: List[List[int]]) -> List[List[float]]:
-    return [_tf_transform_row(row) for row in count_matrix]
-
-
-def _tf_transform_row(row: List[int]) -> List[float]:
-    count_sum = sum(row)
-    return [count / count_sum for count in row]
-
-
-def idf_transform(count_matrix: List[List[int]]) -> List[float]:
-    num_documents = len(count_matrix)
-    document_counts = [0 for _ in range(len(count_matrix[0]))]
-    for row in count_matrix:
-        for i, count in enumerate(row):
-            if count > 0:
-                document_counts[i] += 1
-
-    idf_vector = [log((num_documents + 1) / (feature_count + 1)) + 1 for feature_count in
-                  document_counts]
-    return idf_vector
-
-
 class TfidfTransformer:
     @staticmethod
+    def tf_transform(count_matrix: List[List[int]]) -> List[List[float]]:
+        return [TfidfTransformer._tf_transform_row(row) for row in count_matrix]
+
+    @staticmethod
+    def _tf_transform_row(row: List[int]) -> List[float]:
+        count_sum = sum(row)
+        return [count / count_sum for count in row]
+
+    @staticmethod
+    def idf_transform(count_matrix: List[List[int]]) -> List[float]:
+        num_documents = len(count_matrix)
+        document_counts = [0 for _ in range(len(count_matrix[0]))]
+        for row in count_matrix:
+            for i, count in enumerate(row):
+                if count > 0:
+                    document_counts[i] += 1
+
+        idf_vector = [
+            log((num_documents + 1) / (feature_count + 1)) + 1 for feature_count in document_counts
+        ]
+        return idf_vector
+
+    @staticmethod
     def fit_transform(count_matrix: List[List[int]]) -> List[List[float]]:
-        tf_matrix = tf_transform(count_matrix)
-        idf_vector = idf_transform(count_matrix)
-        tfidf_matrix = [TfidfTransformer._multiply_by_elements(row, idf_vector) for row in
-                        tf_matrix]
+        tf_matrix = TfidfTransformer.tf_transform(count_matrix)
+        idf_vector = TfidfTransformer.idf_transform(count_matrix)
+        tfidf_matrix = [
+            TfidfTransformer._multiply_by_elements(row, idf_vector) for row in tf_matrix
+        ]
         return tfidf_matrix
 
     @staticmethod
