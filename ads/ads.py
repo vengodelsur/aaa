@@ -24,6 +24,7 @@ class Deserializer:
 
     @staticmethod
     def nested_dict_to_class_instance(nested_dict, class_, is_top_level_call=True):
+        # TODO: check keywords
         if not isinstance(nested_dict, dict):
             return nested_dict
         arguments = {
@@ -62,3 +63,21 @@ class Advert:
         )
         for key, value in arguments.items():
             setattr(self, key, value)
+
+    @property
+    def price(self):
+        """
+        >>> import json
+        >>> lesson_str = '{"title": "python", "price": -1}'
+        >>> lesson = json.loads(lesson_str)
+        >>> lesson_ad = Advert(lesson)
+        Traceback (most recent call last):
+            ...
+        ValueError: Price must be >=0
+        """
+        return self._price
+
+    @price.setter
+    def price(self, value):
+        if value < 0:
+            raise ValueError("Price must be >=0")
