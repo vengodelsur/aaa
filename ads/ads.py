@@ -65,7 +65,7 @@ class Advert:
             setattr(self, key, value)
 
     @property
-    def price(self):
+    def price(self, default_value=0):
         """
         >>> import json
         >>> lesson_str = '{"title": "python", "price": -1}'
@@ -74,8 +74,17 @@ class Advert:
         Traceback (most recent call last):
             ...
         ValueError: Price must be >=0
+
+        >>> lesson_str = '{"title": "python"}'
+        >>> lesson = json.loads(lesson_str)
+        >>> lesson_ad = Advert(lesson)
+        >>> lesson_ad.price
+        0
         """
-        return self._price
+        return getattr(self, "_price", default_value)
+        # It would be more explicit to set the price to default value in init,
+        # but then we wouldn't be able to tell the ads with price 0 from ads without info on price.
+        # Also this way seems to be more convenient if we may need to change default value.
 
     @price.setter
     def price(self, value):
