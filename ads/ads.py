@@ -81,10 +81,11 @@ class Advert:
         >>> lesson_ad.price
         0
         """
+        # Warning: this realisation is questionable.
+        # It would be more explicit to set the price to default value in init, but then we'd have to
+        # store additional info  to tell the ads with price 0 from ads without info on price.
+        # Also this way seems to be more convenient if we may need to change the default value.
         return getattr(self, "_price", default_value)
-        # It would be more explicit to set the price to default value in init,
-        # but then we wouldn't be able to tell the ads with price 0 from ads without info on price.
-        # Also this way seems to be more convenient if we may need to change default value.
 
     @price.setter
     def price(self, value):
