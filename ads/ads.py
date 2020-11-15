@@ -19,6 +19,7 @@ def create_class(name: str) -> type:
 
 
 class Deserializer:
+    # TODO: refactor json to class instance transformation
     def flat_dict_to_class_instance(self, flat_dict, class_):
         return class_(**flat_dict)
 
@@ -63,6 +64,8 @@ class Advert:
         )
         for key, value in arguments.items():
             setattr(self, key, value)
+            if key == "price":
+                self._price = value
 
     @property
     def price(self, default_value=0):
@@ -87,7 +90,19 @@ class Advert:
         # Also this way seems to be more convenient if we may need to change the default value.
         return getattr(self, "_price", default_value)
 
+
     @price.setter
     def price(self, value):
         if value < 0:
             raise ValueError("Price must be >=0")
+
+    def __repr__(self):
+        """
+        >>> import json
+        >>> iphone_str = '{"title": "iPhone X", "price": 100}'
+        >>> iphone = json.loads(iphone_str)
+        >>> iphone_ad = Advert(iphone)
+        >>> print(iphone_ad)
+        iPhone X | 100 ₽
+        """
+        return f'{self.title} | {self.price} ₽' #TODO: title not set
