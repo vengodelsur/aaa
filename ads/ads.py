@@ -110,18 +110,7 @@ class Advert(ColorizeMixin):
         >>> iphone_ad = Advert(iphone)
         >>> print(iphone_ad)
         \033[33miPhone X | 100 ₽\033[m
+        >>> print("next line in default color")
+        next line in default color
         """
         return self.colorize(f"{self.title} | {self.price} ₽")  # TODO: handle title not set
-
-
-if __name__ == "__main__":
-    corgi = {
-        "title": "Вельш-корги",
-        "price": 1000,
-        "class": "dogs",
-        "location": {"address": "сельское поселение Ельдигинское, поселок санатория Тишково, 25"},
-    }
-    corgi_ad = Advert(corgi)
-    print(corgi_ad)
-    print("next line in default color")
-    print(corgi_ad.location.address)
