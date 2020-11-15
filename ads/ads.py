@@ -39,7 +39,14 @@ class Deserializer:
         return class_(**arguments)
 
 
-class Advert:
+class ColorizeMixin:
+    def colorize(self, string):
+        return f"\033[{self.repr_color_code}m{string}\033[m"
+
+
+class Advert(ColorizeMixin):
+    ANSI_yellow = 33
+    repr_color_code = ANSI_yellow
     JSONType = Dict[str, Any]
 
     def __init__(self, json_info: JSONType):
@@ -90,7 +97,6 @@ class Advert:
         # Also this way seems to be more convenient if we may need to change the default value.
         return getattr(self, "_price", default_value)
 
-
     @price.setter
     def price(self, value):
         if value < 0:
@@ -103,6 +109,19 @@ class Advert:
         >>> iphone = json.loads(iphone_str)
         >>> iphone_ad = Advert(iphone)
         >>> print(iphone_ad)
-        iPhone X | 100 ₽
+        \033[33miPhone X | 100 ₽\033[m
         """
-        return f'{self.title} | {self.price} ₽' #TODO: title not set
+        return self.colorize(f"{self.title} | {self.price} ₽")  # TODO: handle title not set
+
+
+if __name__ == "__main__":
+    corgi = {
+        "title": "Вельш-корги",
+        "price": 1000,
+        "class": "dogs",
+        "location": {"address": "сельское поселение Ельдигинское, поселок санатория Тишково, 25"},
+    }
+    corgi_ad = Advert(corgi)
+    print(corgi_ad)
+    print("next line in default color")
+    print(corgi_ad.location.address)
