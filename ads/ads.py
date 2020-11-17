@@ -1,21 +1,25 @@
-from typing import Dict, Any
-
-
-
-
+from typing import Dict, Any, Union
+from keyword import iskeyword
 
 class Deserializer:
-    # TODO: refactor json to class instance transformation
-    def flat_dict_to_class_instance(self, flat_dict, class_):
-        return class_(**flat_dict)
+    @staticmethod
+    def fix_non_identifier_name(name: str) -> str:
+        if iskeyword(name):
+            return f"{name}_"
+        return name
 
     @staticmethod
-    def nested_dict_to_class_instance(nested_dict, class_, is_top_level_call=True):
+    def default_init(obj, **kwargs):
+        for key, value in kwargs.items():
+            setattr(obj, key, value)
+
+    @staticmethod
+    def nested_dict_to_class_arguments(nested_dict: Any, class_: type, is_top_level_call=True) -> Union[dict, object]:
         # TODO: check keywords
         if not isinstance(nested_dict, dict):
             return nested_dict
         arguments = {
-            key: Deserializer.nested_dict_to_class_instance(
+            key: Deserializer.nested_dict_to_class_arguments(
                 value, Deserializer.create_class(key), is_top_level_call=False
             )
             for key, value in nested_dict.items()
@@ -34,16 +38,12 @@ class Deserializer:
         'город Москва, Лесная, 7'
         """
 
-        def __init__(self, **kwargs):
-            for key, value in kwargs.items():
-                setattr(self, key, value)
-
-        class_ = type(name, (object,), {"__init__": __init__})
+        class_ = type(name, (object,), {"__init__": Deserializer.default_init})
         return class_
 
 
 class ColorizeMixin:
-    def colorize(self, string):
+    def colorize(self, string: str) -> str:
         return f"\033[{self.repr_color_code}m{string}\033[m"
 
 
@@ -68,12 +68,11 @@ class Advert(ColorizeMixin):
         >>> lesson_ad.location.address
         'город Москва, Лесная, 7'
         """
-        arguments = Deserializer.nested_dict_to_class_instance(
+        arguments = Deserializer.nested_dict_to_class_arguments(
             json_info,
             type(self).__name__,
         )
-        for key, value in arguments.items():
-            setattr(self, key, value)
+        Deserializer.default_init(self, **arguments)
 
     @property
     def price(self, default_value=0):
@@ -99,7 +98,7 @@ class Advert(ColorizeMixin):
         return getattr(self, "_price", default_value)
 
     @price.setter
-    def price(self, value):
+    def price(self, value: int):
         if value < 0:
             raise ValueError("Price must be >=0")
         self._price = value
