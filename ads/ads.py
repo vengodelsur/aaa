@@ -1,5 +1,6 @@
-from typing import Dict, Any, Union
 from keyword import iskeyword
+from typing import Dict, Any, Union
+
 
 class Deserializer:
     @staticmethod
@@ -11,10 +12,12 @@ class Deserializer:
     @staticmethod
     def default_init(obj, **kwargs):
         for key, value in kwargs.items():
-            setattr(obj, key, value)
+            fixed_key = Deserializer.fix_non_identifier_name(key)
+            setattr(obj, fixed_key, value)
 
     @staticmethod
-    def nested_dict_to_class_arguments(nested_dict: Any, class_: type, is_top_level_call=True) -> Union[dict, object]:
+    def nested_dict_to_class_arguments(nested_dict: Union[dict, Any], class_: type, is_top_level_call=True) -> \
+            Union[dict, object]:
         # TODO: check keywords
         if not isinstance(nested_dict, dict):
             return nested_dict
@@ -37,14 +40,16 @@ class Deserializer:
         >>> location.address
         'город Москва, Лесная, 7'
         """
-
-        class_ = type(name, (object,), {"__init__": Deserializer.default_init})
+        fixed_name = Deserializer.fix_non_identifier_name(name)
+        class_ = type(fixed_name, (object,), {"__init__": Deserializer.default_init})
         return class_
 
 
 class ColorizeMixin:
     def colorize(self, string: str) -> str:
         return f"\033[{self.repr_color_code}m{string}\033[m"
+
+
 
 
 class Advert(ColorizeMixin):
@@ -55,18 +60,20 @@ class Advert(ColorizeMixin):
     def __init__(self, json_info: JSONType):
         """
         >>> import json
-        >>> lesson_str = '''{
-        ...    "title": "python",
-        ...    "price": 0,
-        ...    "location": {
-        ...        "address": "город Москва, Лесная, 7",
-        ...        "metro_stations": ["Белорусская"]
-        ...    }
+        >>> corgi_str = '''{
+        ...     "title": "Вельш-корги",
+        ...     "price": 1000,
+        ...     "class": "dogs",
+        ...     "location": {
+        ...     "address": "сельское поселение Ельдигинское, поселок санатория Тишково, 25"
+        ...     }
         ... }'''
-        >>> lesson = json.loads(lesson_str)
-        >>> lesson_ad = Advert(lesson)
-        >>> lesson_ad.location.address
-        'город Москва, Лесная, 7'
+        >>> corgi = json.loads(corgi_str)
+        >>> corgi_ad = Advert(corgi)
+        >>> corgi_ad.location.address
+        'сельское поселение Ельдигинское, поселок санатория Тишково, 25'
+        >>> corgi_ad.class_
+        'dogs'
         """
         arguments = Deserializer.nested_dict_to_class_arguments(
             json_info,
