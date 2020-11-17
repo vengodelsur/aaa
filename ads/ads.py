@@ -51,6 +51,8 @@ class Deserializer:
         >>> location.address
         'город Москва, Лесная, 7'
         """
+        # It might be better not to create classes dynamically but to create common class "Field"
+        # and store all kinds of json info using this type
         fixed_name = Deserializer.fix_non_identifier_name(name)
         class_ = type(fixed_name, (object,), {"__init__": Deserializer.default_init})
         return class_
