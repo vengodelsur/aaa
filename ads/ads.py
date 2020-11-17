@@ -1,10 +1,21 @@
+import warnings
 from keyword import iskeyword
 from typing import Dict, Any, Union
 
 
 class Deserializer:
+    """
+    Класс для получения объектов классов из многоуровневых jsonов с возможностью
+    обращаться к атрибутам через точку: object.location.address
+    """
+
     @staticmethod
     def fix_non_identifier_name(name: str) -> str:
+        """
+        Исправляет ключевые слова, которые нельзя использовать как identifiers
+        :param name: исходная строка (возможно, ключевое слово)
+        :return: исправленная строка (не ключевое словао)
+        """
         if iskeyword(name):
             return f"{name}_"
         return name
@@ -16,9 +27,9 @@ class Deserializer:
             setattr(obj, fixed_key, value)
 
     @staticmethod
-    def nested_dict_to_class_arguments(nested_dict: Union[dict, Any], class_: type, is_top_level_call=True) -> \
-            Union[dict, object]:
-        # TODO: check keywords
+    def nested_dict_to_class_arguments(
+        nested_dict: Union[dict, Any], class_: type, is_top_level_call=True
+    ) -> Union[dict, object]:
         if not isinstance(nested_dict, dict):
             return nested_dict
         arguments = {
@@ -46,13 +57,17 @@ class Deserializer:
 
 
 class ColorizeMixin:
+    """Mixin для цветного вывода в консоль, использует цвет в self.repr_color_code"""
+
     def colorize(self, string: str) -> str:
         return f"\033[{self.repr_color_code}m{string}\033[m"
 
 
-
-
 class Advert(ColorizeMixin):
+    """
+    Хранение объявлений с проверкой корректности цены
+    """
+
     ANSI_yellow = 33
     repr_color_code = ANSI_yellow
     JSONType = Dict[str, Any]
@@ -121,4 +136,9 @@ class Advert(ColorizeMixin):
         >>> print("next line in default color")
         next line in default color
         """
-        return self.colorize(f"{self.title} | {self.price} ₽")  # TODO: handle title not set
+        if not hasattr(self, "title"):
+            warnings.warn("Title not set, can't represent correctly")
+            title = "NOTITLE"
+        else:
+            title = self.title
+        return self.colorize(f"{title} | {self.price} ₽")
