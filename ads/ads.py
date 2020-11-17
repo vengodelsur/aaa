@@ -1,21 +1,7 @@
 from typing import Dict, Any
 
 
-def create_class(name: str) -> type:
-    """
-    >>> location_class = create_class("Location")
-    >>> location = location_class(**{"address": "город Москва, Лесная, 7",
-    ...                              "metro_stations": ["Белорусская"]})
-    >>> location.address
-    'город Москва, Лесная, 7'
-    """
 
-    def __init__(self, **kwargs):
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-
-    class_ = type(name, (object,), {"__init__": __init__})
-    return class_
 
 
 class Deserializer:
@@ -30,13 +16,30 @@ class Deserializer:
             return nested_dict
         arguments = {
             key: Deserializer.nested_dict_to_class_instance(
-                value, create_class(key), is_top_level_call=False
+                value, Deserializer.create_class(key), is_top_level_call=False
             )
             for key, value in nested_dict.items()
         }
         if is_top_level_call:
             return arguments
         return class_(**arguments)
+
+    @staticmethod
+    def create_class(name: str) -> type:
+        """
+        >>> location_class = Deserializer.create_class("Location")
+        >>> location = location_class(**{"address": "город Москва, Лесная, 7",
+        ...                              "metro_stations": ["Белорусская"]})
+        >>> location.address
+        'город Москва, Лесная, 7'
+        """
+
+        def __init__(self, **kwargs):
+            for key, value in kwargs.items():
+                setattr(self, key, value)
+
+        class_ = type(name, (object,), {"__init__": __init__})
+        return class_
 
 
 class ColorizeMixin:
@@ -71,8 +74,6 @@ class Advert(ColorizeMixin):
         )
         for key, value in arguments.items():
             setattr(self, key, value)
-            if key == "price":
-                self._price = value
 
     @property
     def price(self, default_value=0):
@@ -101,6 +102,7 @@ class Advert(ColorizeMixin):
     def price(self, value):
         if value < 0:
             raise ValueError("Price must be >=0")
+        self._price = value
 
     def __repr__(self):
         """
