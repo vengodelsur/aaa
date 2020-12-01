@@ -22,7 +22,7 @@ class TestOneHotEncoder(unittest.TestCase):
         with self.assertRaises(TypeError):
             encoded = fit_transform()
 
-    def test_repeated(self):
+    def test_list(self):
         cities = ['Moscow', 'New York', 'Moscow', 'London']
         exp_transformed_cities = [
             ('Moscow', [0, 0, 1]),
@@ -33,3 +33,30 @@ class TestOneHotEncoder(unittest.TestCase):
         transformed_cities = fit_transform(cities)
         self.assertEqual(transformed_cities, exp_transformed_cities)
 
+    def test_strings(self):
+        exp_transformed_cities = [('Moscow', [0, 0, 1]), ('Москва', [0, 1, 0]), ('Moscou', [1, 0, 0])]
+        transformed_cities = fit_transform("Moscow", "Москва", "Moscou")
+        self.assertEqual(transformed_cities, exp_transformed_cities)
+
+
+def test_onehot_empty():
+    with pytest.raises(TypeError):
+        encoded = fit_transform()
+
+
+def test_onehot_list():
+    cities = ['Moscow', 'New York', 'Moscow', 'London']
+    exp_transformed_cities = [
+        ('Moscow', [0, 0, 1]),
+        ('New York', [0, 1, 0]),
+        ('Moscow', [0, 0, 1]),
+        ('London', [1, 0, 0]),
+    ]
+    transformed_cities = fit_transform(cities)
+    assert (transformed_cities == exp_transformed_cities)
+
+
+def test_onehot_strings():
+    exp_transformed_cities = [('Moscow', [0, 0, 1]), ('Москва', [0, 1, 0]), ('Moscou', [1, 0, 0])]
+    transformed_cities = fit_transform("Moscow", "Москва", "Moscou")
+    assert (transformed_cities == exp_transformed_cities)
