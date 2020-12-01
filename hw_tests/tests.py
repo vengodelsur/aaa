@@ -5,10 +5,10 @@ import pytest
 from morse import decode
 from one_hot_encoder import fit_transform
 
-inputs = ((".... . .-.. .-.. ---   .-- --- .-. .-.. -..", "HELLO WORLD"),
+inputs = ((".... . .-.. .-.. ---   .-- --- .-. .-.. -..", "HELLOWORLD"),
           ("... --- ...", "SOS"),
           (".- ...- .. - ---   .- -. .- .-.. -.-- - .. -.-. ...   .- -.-. .- -.. . -- -.--   .---- ..--- ...--",
-           "AVITO ANALYTICS ACADEMY 123"))
+           "AVITOANALYTICSACADEMY123"))
 
 
 @pytest.mark.parametrize("input, output", inputs)
@@ -19,7 +19,8 @@ def test_decode(input, output):
 class TestOneHotEncoder(unittest.TestCase):
 
     def test_empty(self):
-        encoded = fit_transform([])
+        with self.assertRaises(TypeError):
+            encoded = fit_transform()
 
     def test_repeated(self):
         cities = ['Moscow', 'New York', 'Moscow', 'London']
