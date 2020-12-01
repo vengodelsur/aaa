@@ -1,2 +1,7 @@
 `pip install -r requirements.txt`
-`pytest --doctest-modules -vv tests.py > result`
+
+`coverage erase`
+
+`coverage run --source . -m pytest --doctest-modules -vv tests.py > result`
+
+`coverage html`
