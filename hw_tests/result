@@ -2,17 +2,19 @@
 platform darwin -- Python 3.8.2, pytest-6.1.2, py-1.9.0, pluggy-0.13.1 -- /Users/a18492631/Downloads/venv/bin/python3
 cachedir: .pytest_cache
 rootdir: /Users/a18492631/Downloads/aaa/hw_tests
-collecting ... collected 10 items
+collecting ... collected 12 items
 
-morse.py::morse.encode PASSED                                            [ 10%]
-tests.py::test_decode[.... . .-.. .-.. ---   .-- --- .-. .-.. -..-HELLOWORLD] PASSED [ 20%]
-tests.py::test_decode[... --- ...-SOS] PASSED                            [ 30%]
-tests.py::test_decode[.- ...- .. - ---   .- -. .- .-.. -.-- - .. -.-. ...   .- -.-. .- -.. . -- -.--   .---- ..--- ...---AVITOANALYTICSACADEMY123] PASSED [ 40%]
-tests.py::TestOneHotEncoder::test_empty PASSED                           [ 50%]
-tests.py::TestOneHotEncoder::test_list PASSED                            [ 60%]
-tests.py::TestOneHotEncoder::test_strings PASSED                         [ 70%]
-tests.py::test_onehot_empty PASSED                                       [ 80%]
-tests.py::test_onehot_list PASSED                                        [ 90%]
-tests.py::test_onehot_strings PASSED                                     [100%]
+morse.py::morse.encode PASSED                                            [  8%]
+tests.py::test_decode[.... . .-.. .-.. ---   .-- --- .-. .-.. -..-HELLOWORLD] PASSED [ 16%]
+tests.py::test_decode[... --- ...-SOS] PASSED                            [ 25%]
+tests.py::test_decode[.- ...- .. - ---   .- -. .- .-.. -.-- - .. -.-. ...   .- -.-. .- -.. . -- -.--   .---- ..--- ...---AVITOANALYTICSACADEMY123] PASSED [ 33%]
+tests.py::TestOneHotEncoder::test_empty PASSED                           [ 41%]
+tests.py::TestOneHotEncoder::test_list PASSED                            [ 50%]
+tests.py::TestOneHotEncoder::test_repetitions PASSED                     [ 58%]
+tests.py::TestOneHotEncoder::test_strings PASSED                         [ 66%]
+tests.py::test_onehot_empty PASSED                                       [ 75%]
+tests.py::test_onehot_list PASSED                                        [ 83%]
+tests.py::test_onehot_strings PASSED                                     [ 91%]
+tests.py::test_onehot_repetitions PASSED                                 [100%]
 
-============================== 10 passed in 0.14s ==============================
+============================== 12 passed in 0.15s ==============================
