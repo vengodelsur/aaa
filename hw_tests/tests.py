@@ -1,9 +1,11 @@
 import unittest
+from unittest.mock import patch, MagicMock
 
 import pytest
 
 from morse import decode
 from one_hot_encoder import fit_transform
+from what_is_year_now import what_is_year_now
 
 inputs = ((".... . .-.. .-.. ---   .-- --- .-. .-.. -..", "HELLOWORLD"),
           ("... --- ...", "SOS"),
@@ -71,3 +73,39 @@ def test_onehot_repetitions():
     repetitions = ["some_string_1"] * 10 + ["some_string_2"] * 20
     transformed = fit_transform(repetitions)
     assert (all(len(encoded) == 2 for string, encoded in transformed))
+
+
+class TestWhatIsYearNow(unittest.TestCase):
+    @patch('urllib.request.urlopen')
+    def test_year_first(self, mock_urlopen):
+        mock_response = MagicMock()
+        mock_response.getcode.return_value = 200
+        mock_response.read.return_value = '{"currentDateTime": "2019-03-01"}'
+        mock_response.__enter__.return_value = mock_response
+        mock_urlopen.return_value = mock_response
+        year = what_is_year_now()
+        assert (year == 2019)
+
+    @patch('urllib.request.urlopen')
+    def test_year_last(self, mock_urlopen):
+        mock_response = MagicMock()
+        mock_response.getcode.return_value = 200
+        mock_response.read.return_value = '{"currentDateTime": "01.03.2019"}'
+        mock_response.__enter__.return_value = mock_response
+        mock_urlopen.return_value = mock_response
+        year = what_is_year_now()
+        assert (year == 2019)
+
+    @patch('urllib.request.urlopen')
+    def test_incorrect_format(self, mock_urlopen):
+        mock_response = MagicMock()
+        mock_response.getcode.return_value = 200
+        mock_response.read.return_value = '{"currentDateTime": "10-10-2019"}'
+        mock_response.__enter__.return_value = mock_response
+        mock_urlopen.return_value = mock_response
+        with self.assertRaises(ValueError):
+            year = what_is_year_now()
+
+    def test_main(self):
+        with patch('what_is_year_now.__name__', '__main__'):
+            import what_is_year_now
