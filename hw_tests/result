@@ -21,4 +21,4 @@ tests.py::TestWhatIsYearNow::test_main PASSED                            [ 87%]
 tests.py::TestWhatIsYearNow::test_year_first PASSED                      [ 93%]
 tests.py::TestWhatIsYearNow::test_year_last PASSED                       [100%]
 
-============================== 16 passed in 0.13s ==============================
+============================== 16 passed in 0.24s ==============================
