@@ -1,0 +1,24 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.8.2, pytest-6.1.2, py-1.9.0, pluggy-0.13.1 -- /Users/a18492631/Downloads/venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/a18492631/Downloads/aaa/hw_tests
+collecting ... collected 16 items
+
+morse.py::morse.encode PASSED                                            [  6%]
+tests.py::test_decode[.... . .-.. .-.. ---   .-- --- .-. .-.. -..-HELLOWORLD] PASSED [ 12%]
+tests.py::test_decode[... --- ...-SOS] PASSED                            [ 18%]
+tests.py::test_decode[.- ...- .. - ---   .- -. .- .-.. -.-- - .. -.-. ...   .- -.-. .- -.. . -- -.--   .---- ..--- ...---AVITOANALYTICSACADEMY123] PASSED [ 25%]
+tests.py::TestOneHotEncoder::test_empty PASSED                           [ 31%]
+tests.py::TestOneHotEncoder::test_list PASSED                            [ 37%]
+tests.py::TestOneHotEncoder::test_repetitions PASSED                     [ 43%]
+tests.py::TestOneHotEncoder::test_strings PASSED                         [ 50%]
+tests.py::test_onehot_empty PASSED                                       [ 56%]
+tests.py::test_onehot_list PASSED                                        [ 62%]
+tests.py::test_onehot_strings PASSED                                     [ 68%]
+tests.py::test_onehot_repetitions PASSED                                 [ 75%]
+tests.py::TestWhatIsYearNow::test_incorrect_format PASSED                [ 81%]
+tests.py::TestWhatIsYearNow::test_main PASSED                            [ 87%]
+tests.py::TestWhatIsYearNow::test_year_first PASSED                      [ 93%]
+tests.py::TestWhatIsYearNow::test_year_last PASSED                       [100%]
+
+============================== 16 passed in 0.13s ==============================
