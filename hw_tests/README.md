@@ -2,6 +2,6 @@
 
 `coverage erase`
 
-`coverage run --source . -m pytest --doctest-modules -vv tests.py > result`
+`coverage run --source . -m pytest --doctest-modules -vv *.py > result`
 
 `coverage html`
