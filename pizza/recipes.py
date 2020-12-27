@@ -54,7 +54,7 @@ class PizzaBase:
 
 
 class Margherita(PizzaBase):
-    ICON = ":cheese:"
+    ICON = ":cheese_wedge:"
     tomatoes = 100
 
 
@@ -67,7 +67,3 @@ class Hawaiian(PizzaBase):
     ICON = ":pineapple:"
     chicken = 90
     pineapples = 80
-
-
-print(Pepperoni.description())
-print(dict(Pepperoni()))
