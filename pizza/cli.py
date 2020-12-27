@@ -7,8 +7,7 @@ from recipes import Margherita, Hawaiian, Pepperoni, PizzaBase
 
 PIZZAS = (Margherita, Pepperoni, Hawaiian)
 PIZZAS_BY_NAMES = {pizza.__name__.lower(): pizza for pizza in PIZZAS}
-PIZZA_NAMES = tuple(sorted(PIZZAS_BY_NAMES.keys()))
-MENU = "\n".join(PIZZA_NAMES)
+MENU = "\n".join(pizza.description() for pizza in PIZZAS)
 
 
 @click.group()
