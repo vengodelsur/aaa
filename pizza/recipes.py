@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Tuple, Dict
+from typing import Tuple, Generator
 
 
 class PizzaSize(Enum):
@@ -14,16 +14,18 @@ class PizzaInfo:
 
 
 class PizzaBase:
+    NON_INGREDIENTS_ATTRIBUTES: Tuple[str] = ("pizza_info",)
+
     tomato_sauce = 200
     mozzarella = 125
 
-    def __init__(self, pizza_info: PizzaInfo):
+    def __init__(self, pizza_info: PizzaInfo = PizzaInfo(PizzaSize.L)):
         self.pizza_info = pizza_info
 
-    def __dict__(self, additional_attributes: Tuple[str] = ("pizza_info",)) -> Dict[str, int]:
-        ingredients = {attribute: value for attribute, value in object.__dict__(self).items() if
-                       attribute not in additional_attributes}
-        return ingredients
+    def __iter__(self) -> Generator[Tuple[str, int], None, None]:
+        for key in self.__dict__:
+            if key not in self.NON_INGREDIENTS_ATTRIBUTES:
+                yield key, getattr(self, key)
 
 
 class Margherita(PizzaBase):

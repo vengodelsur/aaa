@@ -17,15 +17,15 @@ def cli():
 
 
 @cli.command()
-@click.option('--delivery', default=False, is_flag=True)
-@click.argument('pizza_name', nargs=1)
+@click.option("--delivery", default=False, is_flag=True)
+@click.argument("pizza_name", nargs=1)
 def order(pizza_name: str, delivery: bool) -> Optional[PizzaBase]:
     """Готовит и доставляет пиццу"""
     try:
-        pizza = PIZZAS_BY_NAMES[pizza_name]
+        pizza = PIZZAS_BY_NAMES[pizza_name]()
     except KeyError:
         print(f"No pizza called {pizza_name}, use menu command to see available pizzas")
-        return
+        return None
     pizza = bake(pizza)
     if delivery:
         pizza = deliver(pizza)

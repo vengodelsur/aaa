@@ -18,21 +18,21 @@ def log(message_format):
     return decorator
 
 
-@log('Приготовили за {}с!')
+@log("Приготовили за {}с!")
 def bake(pizza: PizzaBase):
     """Готовит пиццу"""
     time.sleep(random.randint(3, 6))
     return pizza
 
 
-@log('Доставили за {}с!')
+@log("Доставили за {}с!")
 def deliver(pizza: PizzaBase):
     """Доставляет пиццу"""
     time.sleep(random.randint(1, 3))
     return pizza
 
 
-@log('Забрали за {}с!')
+@log("Забрали за {}с!")
 def pickup(pizza: PizzaBase):
     """Самовывоз"""
     time.sleep(random.randint(2, 5))
