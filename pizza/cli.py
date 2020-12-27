@@ -12,7 +12,7 @@ MENU = "\n".join(PIZZA_NAMES)
 
 
 @click.group()
-def cli():
+def cli() -> None:
     pass
 
 
@@ -35,7 +35,7 @@ def order(pizza_name: str, delivery: bool) -> Optional[PizzaBase]:
 
 
 @cli.command()
-def menu():
+def menu() -> None:
     """Выводит меню"""
     print(MENU)
 
