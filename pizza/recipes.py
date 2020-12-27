@@ -48,7 +48,7 @@ class PizzaBase:
         return list(filter(is_ingredient, members))
 
     @classmethod
-    def description(cls):
+    def description(cls) -> str:
         ingredients = ", ".join(cls.ingredients()).replace("_", " ")
         return emoji.emojize(f"{cls.ICON} {cls.__name__}: {ingredients}")
 

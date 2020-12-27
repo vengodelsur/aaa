@@ -13,14 +13,14 @@ def test_equality():
     pepperoni_right = Pepperoni()
     hawaiian = Hawaiian()
     some_dict = dict(pepperoni_left)
-    assert (pepperoni_left == pepperoni_right)
-    assert (pepperoni_left != hawaiian)
-    assert (pepperoni_left != some_dict)
+    assert pepperoni_left == pepperoni_right
+    assert pepperoni_left != hawaiian
+    assert pepperoni_left != some_dict
 
 
 def test_description():
     description = Margherita.description()
-    assert (description == "🧀 Margherita: mozzarella, tomato sauce, tomatoes")
+    assert description == "🧀 Margherita: mozzarella, tomato sauce, tomatoes"
 
 
 def randint_1(minimum, maximum):
@@ -28,14 +28,14 @@ def randint_1(minimum, maximum):
 
 
 def test_log_kitchen(capsys):
-    with mock.patch('random.randint', randint_1):
+    with mock.patch("random.randint", randint_1):
         pepperoni = Pepperoni()
         bake(pepperoni)
         captured = capsys.readouterr()
-        assert (captured.out == "Приготовили за 1с!\n")
+        assert captured.out == "Приготовили за 1с!\n"
         deliver(pepperoni)
         captured = capsys.readouterr()
-        assert (captured.out == "Доставили за 1с!\n")
+        assert captured.out == "Доставили за 1с!\n"
         pickup(pepperoni)
         captured = capsys.readouterr()
-        assert (captured.out == "Забрали за 1с!\n")
+        assert captured.out == "Забрали за 1с!\n"
