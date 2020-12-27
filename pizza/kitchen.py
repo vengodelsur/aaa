@@ -10,7 +10,7 @@ def log(message_format):
             start = time.time()
             result = function(*args, **kwargs)
             end = time.time()
-            print(message_format.format(end - start))
+            print(message_format.format(int(end - start)))
             return result
 
         return wrapper
@@ -18,7 +18,7 @@ def log(message_format):
     return decorator
 
 
-@log
+@log('Приготовили за {}с!')
 def bake(pizza: PizzaBase):
     """Готовит пиццу"""
     time.sleep(random.randint(3, 6))
@@ -26,7 +26,7 @@ def bake(pizza: PizzaBase):
 
 
 @log('Доставили за {}с!')
-def delivery(pizza: PizzaBase):
+def deliver(pizza: PizzaBase):
     """Доставляет пиццу"""
     time.sleep(random.randint(1, 3))
     return pizza
